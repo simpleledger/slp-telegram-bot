@@ -1,4 +1,4 @@
-const slp    = require('../slp')
+const slputils = require('slpjs').utils
     , Extra  = require('telegraf/extra')
     , Markup = require('telegraf/markup');
 
@@ -17,7 +17,7 @@ module.exports = async function(ctx){
 
         address = address.trim();
         try {
-            address = slp.toCashAddr(address);
+            address = slputils.toCashAddress(address);
         } catch(err){
             ctx.reply(`That's not a valid SLP address 🙁`, {
                 reply_to_message_id: ctx.message.message_id
@@ -43,7 +43,7 @@ module.exports = async function(ctx){
         console.log('Airdrop to response in chat', ctx.message.chat.id);
 
         const addresses = (ctx.message.reply_to_message.text.match(slpRegex) || []).filter(addr => {
-            return slp.isSLPAddr(addr);
+            return slputils.isSlpAddress(addr);
         })
 
         if(addresses.length > 18){
@@ -56,7 +56,7 @@ module.exports = async function(ctx){
             });
         } else {
             const txId = await ctx.account.sendTokens(addresses.map(addr => ({
-                receiver: slp.toCashAddr(addr),
+                receiver: slputils.toCashAddress(addr),
                 amount
             })));
 
@@ -76,7 +76,7 @@ module.exports = async function(ctx){
         const addresses = await ctx.addresses.get();
 
         const txId = await ctx.account.sendTokens(addresses.map(addr => ({
-            receiver: slp.toCashAddr(addr),
+            receiver: slputils.toCashAddress(addr),
             amount
         })));
 

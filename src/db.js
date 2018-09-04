@@ -43,13 +43,11 @@ module.exports = class Database {
     }
 
     async setChatAmount(chatId, amount){
-        if(!(amount instanceof BigNumber)){
+        if(!(amount instanceof BigNumber))
             throw new Error('Amount must be a BigNumber');
-        }
 
-        if(!amount.isInteger() || amount.isLessThan(1)){
+        if(!amount.isInteger() || amount.isLessThan(1))
             throw new Error('Amount must be an integer n > 0');
-        }
 
         const res = await this._db.run(SQL`UPDATE chats SET amount = ${amount.toString()} WHERE id = ${chatId};`);
         if(res.stmt.changes > 0)

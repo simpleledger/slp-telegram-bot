@@ -1,4 +1,9 @@
-const slp       = require('../slp')
+const apiKey = process.env.BITDB_KEY || '';
+if(!apiKey){
+    throw new Error('Missing BitDB key');
+}
+
+const bitdb     = require('slpjs').bitdb
     , escape    = require('escape-html')
     , BigNumber = require('bignumber.js');
 
@@ -21,7 +26,7 @@ module.exports = async function(ctx){
         return;
     }
 
-    const { tokenName, tokenPrecision } = await slp.getTokenInformation(tokenId);
+    const { tokenName, tokenPrecision } = await bitdb.getTokenInformation(tokenId, apiKey);
 
     await ctx.settings.setToken(tokenId, tokenName, tokenPrecision);
     await ctx.settings.setAmount(defAmount.multipliedBy(10 ** tokenPrecision));

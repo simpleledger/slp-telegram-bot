@@ -1,6 +1,8 @@
 const BITBOXCli       = require('bitbox-cli/lib/bitbox-cli').default
     , BITBOX          = new BITBOXCli()
     , slp             = require('../slp')
+    , slputils        = require('slpjs').utils
+    , bitdb           = require('slpjs').bitdb
     , { bindContext } = require('../middleware')
     , BigNumber       = require('bignumber.js');
 
@@ -46,7 +48,7 @@ module.exports = function(bot, hdNode, path){
 
     Object.defineProperty(bot.context.account, 'slpAddress', {
         get: function(){
-            return slp.toSLPAddr(this.address);
+            return slputils.toSlpAddress(this.address);
         }
     });
 
@@ -57,7 +59,7 @@ module.exports = function(bot, hdNode, path){
 
     bot.context.account.balance = async function(){
         const set        = await this.utxo()
-            , validSLPTx = await slp.verifyTransactions([...new Set(set.map(txOut => txOut.txid))]);
+            , validSLPTx = await bitdb.verifyTransactions([...new Set(set.map(txOut => txOut.txid))]);
 
         const map = {
             satoshis: 0,

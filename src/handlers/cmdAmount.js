@@ -27,7 +27,7 @@ module.exports = async function(ctx){
         return;
     }
 
-    await ctx.settings.setAmount(amount.toNumber());
+    await ctx.settings.setAmount(new BigNumber(amount));
 
     ctx.replyWithHTML(`Changed the amount`, {
         reply_to_message_id: ctx.message.message_id

@@ -1,4 +1,4 @@
-const slp = require('../slp');
+const slputils = require('slpjs').utils;
 
 module.exports = async function(ctx){
     const address = ctx.message.text.split(' ')[1];
@@ -9,7 +9,7 @@ module.exports = async function(ctx){
         return;
     }
 
-    if(!slp.isSLPAddr(address)){
+    if(!slputils.isSlpAddress(address)){
         ctx.replyWithHTML(`That's not a valid SLP address 🙄`, {
             reply_to_message_id: ctx.message.message_id
         });

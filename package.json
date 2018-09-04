@@ -12,13 +12,12 @@
   "dependencies": {
     "bignumber.js": "^7.2.1",
     "bitbox-cli": "^1.5.12",
-    "cashaddrjs": "git+https://github.com/simpleledger/cashaddrjs.git",
+    "cashaddrjs-slp": "git+https://github.com/simpleledger/cashaddrjs.git",
     "escape-html": "^1.0.3",
     "lodash": "^4.17.10",
-    "request": "^2.88.0",
-    "request-promise": "^4.2.2",
     "sql-template-strings": "^2.2.2",
     "sqlite": "^3.0.0",
-    "telegraf": "^3.22.2"
+    "telegraf": "^3.22.2",
+    "slpjs": "^0.0.14"
   }
 }

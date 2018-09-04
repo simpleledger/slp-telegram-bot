@@ -1,4 +1,4 @@
-const slp             = require('../slp')
+const slputils        = require('slpjs')
     , { handleError } = require('../middleware/errorHandler');
 
 const interval = 5 * 60 * 1000;
@@ -43,7 +43,7 @@ module.exports = async function(ctx){
                     , { amount } = await ctx.settings.getSettings();
 
                 const txId = await ctx.account.sendTokens(addresses.map(addr => ({
-                    receiver: slp.toCashAddr(addr),
+                    receiver: slputils.toCashAddress(addr),
                     amount
                 })));
 
