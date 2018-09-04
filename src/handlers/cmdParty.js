@@ -1,4 +1,4 @@
-const slputils        = require('slpjs')
+const slputils        = require('slpjs').utils
     , { handleError } = require('../middleware/errorHandler');
 
 const interval = 5 * 60 * 1000;
