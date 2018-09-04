@@ -22,7 +22,7 @@ module.exports = class SLP {
         const set        = await SLP.utxo(BITBOX.ECPair.toCashAddress(keyPair))
             , validSLPTx = await bitdb.verifyTransactions([...new Set(set.map(txOut => txOut.txid))]);
 
-        let slpSendTxnConfig = {
+        let slpConfig = {
             slpSendOpReturn: null,
             input_token_utxos: [],
             tokenReceiverAddressArray: [],
@@ -33,8 +33,7 @@ module.exports = class SLP {
         if(to.length < 1)
             throw new Error('Need at least one receiver');
 
-        let tokenAmount = new BigNumber(0)
-          , dust = Number.MAX_SAFE_INTEGER;
+        let tokenAmount = new BigNumber(0);
 
         for(const txOut of set) {
             if('slp' in txOut && validSLPTx.includes(txOut.txid)){
@@ -42,15 +41,9 @@ module.exports = class SLP {
                     continue;
                 }
                 tokenAmount = tokenAmount.plus(txOut.slp.quantity);
-
-                if(txOut.satoshis < dust) {
-                    dust = txOut.satoshis;
-                }
             }
-            satAmount += txOut.satoshis;
-            inputs++;
 
-            slpSendTxnConfig.input_token_utxos.push({
+            slpConfig.input_token_utxos.push({
                 token_utxo_txid: txOut.txid, 
                 token_utxo_vout: txOut.vout, 
                 token_utxo_satoshis: txOut.satoshis
@@ -81,15 +74,15 @@ module.exports = class SLP {
             opReturn = slpjs.buildSendOpReturn({ tokenIdHex: tokenId, outputQtyArray: to.map(t => t.amount) });
         }
 
-        slpSendTxnConfig.slpSendOpReturn = opReturn;
+        slpConfig.slpSendOpReturn = opReturn;
 
         for(const t of to) {
-            slpSendTxnConfig.tokenReceiverAddressArray.push(slputils.toSlpAddress(t.receiver));
+            slpConfig.tokenReceiverAddressArray.push(slputils.toSlpAddress(t.receiver));
         }
 
 
 
-        let txHex = slpjs.buildRawSendTx(slpSendTxnConfig);
+        let txHex = slpjs.buildRawSendTx(slpConfig);
         console.log(txHex);
         const txId = await BITBOX.RawTransactions.sendRawTransaction(txHex);
 
