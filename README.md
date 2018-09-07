@@ -1,8 +1,8 @@
-#slp-telegram-bot
+# slp-telegram-bot
 
 Distributes SLP tokens in a specified Telegram chat room to a list of registered up to 18 participants.
 
-##Bot commands:
+## Bot commands:
 
 * /info - get chatroom specific status of the bot
 * /admin <on-off> - control whether only admins can perform airdrop
@@ -15,9 +15,9 @@ Distributes SLP tokens in a specified Telegram chat room to a list of registered
 * /party <on-off> - airdrop automatically every 5 minutes
 * /withdraw <withdraw-address> - address to withdraw tokens from
 
-#####NOTE: This bot should be used for experimental purposes only with tiny amounts of BCH! We are not responsible for any loss of funds.
+##### NOTE: This bot should be used for experimental purposes only with tiny amounts of BCH! We are not responsible for any loss of funds.
 
-##How to Run
+## How to Run
 
 1. Register with Telegram bot manager @BotFather obtain bot token 
 2. Obtain BIP 39 mnemonic phrase for use in securing funds managed by the bot
