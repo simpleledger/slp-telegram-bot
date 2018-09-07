@@ -1,15 +1,15 @@
 const BITBOXCli = require('bitbox-cli/lib/bitbox-cli').default
     , BITBOX    = new BITBOXCli()
     , slpjs     = require('slpjs').slp
+    , network   = require('slpjs').bitbox
     , slputils  = require('slpjs').utils
     , bitdb     = require('slpjs').bitdb
-    , util      = require('./util')
     , BigNumber = require('bignumber.js');
 
 module.exports = class SLP {
 
     static async utxo(address){
-        const set = await util.utxo(address);
+        const set = await network.getUtxoWithTxDetails(address);
         for(let txOut of set) {
             try {
                 txOut.slp = slpjs.decodeTxOut(txOut);
@@ -26,8 +26,7 @@ module.exports = class SLP {
             slpSendOpReturn: null,
             input_token_utxos: [],
             tokenReceiverAddressArray: [],
-            bchChangeReceiverAddress: BITBOX.ECPair.toCashAddress(keyPair),
-            wif: BITBOX.ECPair.toWIF(keyPair)
+            bchChangeReceiverAddress: BITBOX.ECPair.toCashAddress(keyPair)
         }     
 
         if(to.length < 1)
@@ -44,9 +43,10 @@ module.exports = class SLP {
             }
 
             slpConfig.input_token_utxos.push({
-                token_utxo_txid: txOut.txid, 
-                token_utxo_vout: txOut.vout, 
-                token_utxo_satoshis: txOut.satoshis
+                txid: txOut.txid, 
+                vout: txOut.vout, 
+                satoshis: txOut.satoshis,
+                wif: BITBOX.ECPair.toWIF(keyPair)
             });
         }
 
