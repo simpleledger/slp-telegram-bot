@@ -29,7 +29,7 @@ module.exports = function(bot, hdNode, path){
                 , hash    = BITBOX.Crypto.sha256(new Buffer(chatId.toFixed(0), 'ascii'))
                 , childId = hash.readUInt32LE(0) & 0x7fffffff /* cut to uint31 */
 
-            return path.replace('%d', childId);
+            return path.replace('%d', 0); //childId);
         }
     });
 

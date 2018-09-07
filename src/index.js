@@ -2,7 +2,8 @@
 const botToken         = process.env.BOT_TOKEN         || ''
     , mnemonic         = process.env.MNEMONIC          || ''
     , mnemonicPassword = process.env.MNEMONIC_PASSWORD || ''
-    , dbFile           = process.env.DATABASE_FILE     || 'bot.db';
+    , dbFile           = process.env.DATABASE_FILE     || 'bot.db'
+    , chatId           = parseInt(process.env.CHAT_ID) || -279797937;
 
 /* Imports */
 const Database   = require('./db')
@@ -31,6 +32,16 @@ const seedBuf = BITBOX.Mnemonic.toSeed(mnemonic, mnemonicPassword)
 /* List     */  context.addresses(bot, db);
 /* Settings */  context.settings(bot, db);
 /* Scheduler */ context.scheduler(bot);
+
+if(chatId){
+    console.log("chatID: " + chatId);
+    // Only read messages from chat with _chatId
+    bot.use(async (ctx, next) => {
+        if(ctx.message.chat.id === chatId){
+            await next(ctx);
+        }
+    })
+}
 
 /* Handlers */
 bot.hears(/^\/admin/i,    middleware.adminOnly, handlers.cmdAdmin);
