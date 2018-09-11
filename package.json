@@ -16,6 +16,6 @@
     "sql-template-strings": "^2.2.2",
     "sqlite": "^3.0.0",
     "telegraf": "^3.22.2",
-    "slpjs": "^0.1.0"
+    "slpjs": "^0.1.3"
   }
 }
